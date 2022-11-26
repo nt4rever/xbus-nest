@@ -17,6 +17,7 @@ model User {
   firstName   String
   lastName    String
   address     String?
+  roles       String[] @default(["user"])
   status      String   @default("active")
   dateOfBirth String?
   createdAt   DateTime @default(now())
@@ -41,6 +42,7 @@ model Station {
   id           String  @id @default(auto()) @map("_id") @db.ObjectId
   routeId      String
   direction    String  @default("forward")
+  order        Int     @default(0)
   name         String
   lat          Float
   lng          Float
