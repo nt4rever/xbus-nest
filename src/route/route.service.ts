@@ -1,5 +1,5 @@
 import { PrismaService } from './../prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { RouteDTO } from './dto';
 
 @Injectable()
@@ -11,6 +11,19 @@ export class RouteService {
     return routes;
   }
 
+  async getRoute(routeId: string) {
+    try {
+      const route = await this.prisma.route.findFirstOrThrow({
+        where: {
+          id: routeId,
+        },
+      });
+      return route;
+    } catch (error) {
+      throw new ForbiddenException('Route Not found!');
+    }
+  }
+
   async insertRoute(dto: RouteDTO) {
     const route = await this.prisma.route.create({
       data: {
@@ -18,8 +31,38 @@ export class RouteService {
       },
     });
     return {
-      message: 'Insert new bus route success',
+      message: 'Insert new bus route success!',
       route,
     };
+  }
+
+  async updateRoute(routeId: string, dto: RouteDTO) {
+    try {
+      return this.prisma.route.update({
+        where: {
+          id: routeId,
+        },
+        data: {
+          ...dto,
+        },
+      });
+    } catch (error) {
+      throw new ForbiddenException('Route Not found!');
+    }
+  }
+
+  async deleteRoute(routeId: string) {
+    try {
+      await this.prisma.route.delete({
+        where: {
+          id: routeId,
+        },
+      });
+      return {
+        message: 'Route deleted!',
+      };
+    } catch (error) {
+      throw new ForbiddenException('Route Not found!');
+    }
   }
 }
