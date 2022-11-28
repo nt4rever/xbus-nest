@@ -5,7 +5,6 @@ import { GetStationDTO, StationDTO, UpdateStationDTO } from './dto';
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -19,7 +18,7 @@ import { Role } from '../enum';
 export class StationController {
   constructor(private stationService: StationService) {}
 
-  @Get()
+  @Post()
   @HttpCode(HttpStatus.OK)
   getStations(@Body() dto: GetStationDTO) {
     return this.stationService.getStations(dto.routeId);
