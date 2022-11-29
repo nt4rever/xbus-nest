@@ -7,6 +7,7 @@ import {
   Controller,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -38,5 +39,13 @@ export class StationController {
   @HttpCode(HttpStatus.OK)
   updateSatation(@Body() dto: UpdateStationDTO) {
     return this.stationService.updateStation(dto);
+  }
+
+  @Roles(Role.Admin)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Post('delete/:id')
+  @HttpCode(HttpStatus.OK)
+  deleteSatation(@Param('id') id: string) {
+    return this.stationService.deleteStation(id);
   }
 }
