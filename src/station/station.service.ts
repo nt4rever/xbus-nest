@@ -52,4 +52,19 @@ export class StationService {
       throw new ForbiddenException('Access to resources denied!');
     }
   }
+
+  async deleteStation(stationId: string) {
+    try {
+      await this.prisma.station.delete({
+        where: {
+          id: stationId,
+        },
+      });
+      return {
+        message: 'Delete station success!',
+      };
+    } catch (error) {
+      throw new ForbiddenException('Access to resources denied!');
+    }
+  }
 }
