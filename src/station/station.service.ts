@@ -24,6 +24,9 @@ export class StationService {
         where: {
           routeId: id,
         },
+        orderBy: {
+          order: 'asc'
+        }
       });
       return stations;
     } catch (error) {
