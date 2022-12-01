@@ -7,7 +7,11 @@ export class RouteService {
   constructor(private prisma: PrismaService) {}
 
   async getAllRoute() {
-    const routes = await this.prisma.route.findMany({});
+    const routes = await this.prisma.route.findMany({
+      orderBy: {
+        routeCode: 'asc',
+      },
+    });
     return routes;
   }
 
