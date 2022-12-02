@@ -25,8 +25,8 @@ export class StationService {
           routeId: id,
         },
         orderBy: {
-          order: 'asc'
-        }
+          order: 'asc',
+        },
       });
       return stations;
     } catch (error) {
@@ -51,6 +51,28 @@ export class StationService {
           ...station,
         },
       });
+    } catch (error) {
+      throw new ForbiddenException('Access to resources denied!');
+    }
+  }
+
+  async updateStations(stations: UpdateStationDTO[]) {
+    try {
+      const transactions = [];
+      stations.forEach((station) => {
+        const { id, ...data } = station;
+        transactions.push(
+          this.prisma.station.update({
+            where: {
+              id: id,
+            },
+            data: {
+              ...data,
+            },
+          }),
+        );
+      });
+      await this.prisma.$transaction(transactions);
     } catch (error) {
       throw new ForbiddenException('Access to resources denied!');
     }
