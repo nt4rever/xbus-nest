@@ -43,6 +43,14 @@ export class StationController {
 
   @Roles(Role.Admin)
   @UseGuards(JwtGuard, RolesGuard)
+  @Post('updates')
+  @HttpCode(HttpStatus.OK)
+  updateSatations(@Body() dto: UpdateStationDTO[]) {
+    return this.stationService.updateStations(dto);
+  }
+
+  @Roles(Role.Admin)
+  @UseGuards(JwtGuard, RolesGuard)
   @Post('delete/:id')
   @HttpCode(HttpStatus.OK)
   deleteSatation(@Param('id') id: string) {
