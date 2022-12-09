@@ -2,9 +2,10 @@ import { ConfigService } from '@nestjs/config';
 import { PrismaService } from './../prisma/prisma.service';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AuthDTO, SignUpDTO } from './dto';
+import { AuthDTO, EditDTO, SignUpDTO } from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -43,6 +44,12 @@ export class AuthService {
     }
   }
 
+  /**
+   * It takes in an email and password, finds the user in the database, checks if the password matches,
+   * and returns an access token and refresh token
+   * @param {AuthDTO}  - AuthDTO -&gt;
+   * @returns The access_token and refresh_token are being returned.
+   */
   async signin({ email, password }: AuthDTO) {
     const user = await this.prisma.user.findUnique({
       where: {
@@ -65,15 +72,19 @@ export class AuthService {
   }
 
   async logout(userId: string) {
-    const user = await this.prisma.user.update({
-      where: { id: userId },
-      data: {
-        refreshToken: null,
-      },
-    });
-    delete user.password;
-    delete user.refreshToken;
-    return user;
+    try {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          refreshToken: null,
+        },
+      });
+      return {
+        message: 'Log out success!',
+      };
+    } catch (err) {
+      throw new ForbiddenException('Access Denied');
+    }
   }
 
   async refreshTokens(userId: string, refreshToken: string) {
@@ -132,5 +143,62 @@ export class AuthService {
       accessToken,
       refreshToken,
     };
+  }
+
+  /**
+   * If the user is not the same as the current user, then update the user's password with the new
+   * password.
+   * @param {EditDTO} dto - EditDTO
+   * @param {User} currentUser - User - this is the user that is currently logged in
+   * @returns The return type is a promise.
+   */
+  async update(dto: EditDTO, currentUser: User) {
+    try {
+      const { id, ...data } = dto;
+      if (currentUser.id === id) throw new ForbiddenException('Access Denied');
+
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (!user) throw new ForbiddenException('Access Denied');
+
+      if (dto.password) {
+        const hash = await argon.hash(dto.password);
+        data.password = hash;
+      }
+
+      await this.prisma.user.update({
+        where: {
+          id,
+        },
+        data: {
+          ...data,
+        },
+      });
+      return {
+        message: 'update auth success!',
+      };
+    } catch (err) {
+      console.log(err);
+
+      throw new ForbiddenException('Access Denied');
+    }
+  }
+
+  /**
+   * The function `getUsers` returns a promise that resolves to an array of users
+   * @returns An array of users.
+   */
+  async getUsers() {
+    const users = await this.prisma.user.findMany({});
+    const userList = users.map((user) => {
+      delete user.password;
+      delete user.refreshToken;
+      return user;
+    });
+    return userList;
   }
 }

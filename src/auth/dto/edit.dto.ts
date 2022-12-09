@@ -1,23 +1,19 @@
 import {
   IsArray,
-  IsEmail,
   IsNotEmpty,
   IsOptional,
   IsString,
+  Length,
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { Role } from 'src/enum';
 
-export class SignUpDTO {
-  @IsEmail()
+export class EditDTO {
   @IsNotEmpty()
-  email: string;
-
   @IsString()
-  @IsNotEmpty()
-  @MinLength(6)
-  @MaxLength(16)
-  password: string;
+  @Length(12)
+  id: string;
 
   @IsString()
   @IsNotEmpty()
@@ -38,4 +34,14 @@ export class SignUpDTO {
   @IsString()
   @IsOptional()
   dateOfBirth?: string;
+
+  @IsNotEmpty()
+  @IsArray()
+  roles: Role[];
+
+  @IsOptional()
+  @IsString()
+  @MinLength(6)
+  @MaxLength(16)
+  password?: string;
 }
