@@ -122,7 +122,7 @@ export class AuthService {
     });
   }
 
-  private async getTokens(userId: string, email: string) {
+  async getTokens(userId: string, email: string) {
     const payload = {
       sub: userId,
       email,
