@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { StationModule } from './station/station.module';
 import { RatingModule } from './rating/rating.module';
+import { GoogleAuthenticationModule } from './google-authentication/google-authentication.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { RatingModule } from './rating/rating.module';
     UserModule,
     StationModule,
     RatingModule,
+    GoogleAuthenticationModule,
   ],
 })
 export class AppModule {}
