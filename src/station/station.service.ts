@@ -74,6 +74,7 @@ export class StationService {
       });
       await this.prisma.$transaction(transactions);
     } catch (error) {
+      console.log(error);
       throw new ForbiddenException('Access to resources denied!');
     }
   }
