@@ -37,7 +37,9 @@ export class GoogleAuthenticationService {
 
   async handleSignIn(user: User) {
     const tokens = await this.authService.getTokens(user.id, user.email);
+    await this.authService.updateRefreshToken(user.id, tokens.refreshToken);
     delete user.password;
+    delete user.refreshToken;
     return {
       access_token: tokens.accessToken,
       refresh_token: tokens.refreshToken,

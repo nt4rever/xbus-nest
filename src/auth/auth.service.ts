@@ -95,12 +95,14 @@ export class AuthService {
         },
       });
       if (!user || !user.refreshToken)
-        throw new ForbiddenException('Access Denied');
+        throw new ForbiddenException('Access Denied - user not found');
       const refreshTokenMatches = await argon.verify(
         user.refreshToken,
         refreshToken,
       );
-      if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');
+
+      if (!refreshTokenMatches)
+        throw new ForbiddenException('Access Denied - token error');
       const tokens = await this.getTokens(user.id, user.email);
       await this.updateRefreshToken(user.id, tokens.refreshToken);
       return {
@@ -112,7 +114,7 @@ export class AuthService {
     }
   }
 
-  private async updateRefreshToken(userId: string, refreshToken: string) {
+  async updateRefreshToken(userId: string, refreshToken: string) {
     const hash = await argon.hash(refreshToken);
     await this.prisma.user.update({
       where: { id: userId },
