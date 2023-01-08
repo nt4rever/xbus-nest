@@ -8,11 +8,19 @@ export class RatingService {
   constructor(private prisma: PrismaService) {}
 
   async createRating(user: User, rating: CreateRatingDTO) {
-    return this.prisma.rating.create({
+    await this.prisma.rating.create({
       data: {
         ...rating,
         name: `${user.firstName} ${user.lastName}`,
         userId: user.id,
+      },
+    });
+    return await this.prisma.rating.findMany({
+      where: {
+        routeId: rating.routeId,
+      },
+      orderBy: {
+        time: 'desc',
       },
     });
   }
