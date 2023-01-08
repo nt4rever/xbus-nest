@@ -90,6 +90,10 @@ body {
   text-align: center;
 }
 
+.form-container label {
+  font-weight: 400;
+}
+
 .form-container button {
   background: rgba(255, 255, 255, 0.25);
   font-family: 'Poppins', sans-serif;

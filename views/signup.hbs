@@ -17,47 +17,72 @@
         <div class='overlay hide'>
           <div class='spinner'></div>
         </div>
-        <h2 class='title'>Welcome back</h2>
         <div class='form-container'>
           <form action='#' method='post'>
             <div class='field'>
               <label class='label'>Email</label>
               <div class='control'>
-                <input
-                  class='input is-light'
-                  name='email'
-                  readonly='true'
-                  type='email'
-                />
+                <input class='input is-light' name='email' type='email' />
               </div>
             </div>
             <div class='field'>
               <label class='label'>First Name</label>
               <div class='control'>
-                <input class='input is-light' name='firstName' type='text' />
+                <input
+                  class='input is-light'
+                  required
+                  name='firstName'
+                  type='text'
+                />
               </div>
             </div>
             <div class='field'>
               <label class='label'>Last Name</label>
               <div class='control'>
-                <input class='input is-light' name='lastName' type='text' />
+                <input
+                  class='input is-light'
+                  required
+                  name='lastName'
+                  type='text'
+                />
               </div>
             </div>
             <div class='field'>
               <label class='label'>Date of birth</label>
               <div class='control'>
-                <input class='input is-light' name='dateOfBirth' type='text' />
+                <input
+                  class='input is-light'
+                  required
+                  name='dateOfBirth'
+                  type='text'
+                />
               </div>
             </div>
             <div class='field'>
               <label class='label'>Address</label>
               <div class='control'>
-                <input class='input is-light' name='address' type='text' />
+                <input
+                  class='input is-light'
+                  required
+                  name='address'
+                  type='text'
+                />
+              </div>
+            </div>
+            <div class='field'>
+              <label class='label'>Password</label>
+              <div class='control'>
+                <input
+                  class='input is-light'
+                  required
+                  name='password'
+                  type='password'
+                />
               </div>
             </div>
             <div class='field'>
               <div class='control sign-box'>
-                <button class='button' id='change-info'>Submit</button>
+                <button class='button' id='create-account'>Create new account</button>
               </div>
             </div>
           </form>
@@ -70,7 +95,7 @@
       crossorigin='anonymous'
       referrerpolicy='no-referrer'
     ></script>
-    <script src='/js/index.js'>
+    <script src='/js/signup.js'>
     </script>
   </body>
 </html>
