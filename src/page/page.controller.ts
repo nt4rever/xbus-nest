@@ -7,4 +7,16 @@ export class PageController {
   signInPage() {
     return {};
   }
+
+  @Get('/signup')
+  @Render('signup')
+  signUpPage() {
+    return {};
+  }
+
+  @Get('/password')
+  @Render('password')
+  passwordPage() {
+    return {};
+  }
 }

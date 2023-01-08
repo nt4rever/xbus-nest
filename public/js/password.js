@@ -3,19 +3,14 @@ $(function () {
   const overlay = $('.overlay');
   if (token) {
     $.ajax({
-      url: 'user',
+      url: '/user',
       type: 'GET',
       dataType: 'json',
       beforeSend: function (xhr) {
         xhr.setRequestHeader('Authorization', `Bearer ${token}`);
       },
-      success: function (data) {
+      success: function () {
         overlay.addClass('hide');
-        $('input[name="email"]').val(data.email);
-        $('input[name="firstName"]').val(data.firstName);
-        $('input[name="lastName"]').val(data.lastName);
-        $('input[name="dateOfBirth"]').val(data.dateOfBirth);
-        $('input[name="address"]').val(data.address);
       },
       error: function (err) {
         $('.wrapper__container').html('Error');
@@ -27,23 +22,19 @@ $(function () {
 
   $('#change-info').on('click', function (e) {
     e.preventDefault();
-    const firstName = $('input[name="firstName"]').val();
-    const lastName = $('input[name="lastName"]').val();
-    const dateOfBirth = $('input[name="dateOfBirth"]').val();
-    const address = $('input[name="address"]').val();
+    const oldPassword = $('input[name="oldPassword"]').val();
+    const newPassword = $('input[name="newPassword"]').val();
 
-    if (!firstName || !lastName || !dateOfBirth || !address) return;
+    if (!oldPassword || !newPassword) return;
     overlay.toggleClass('hide');
 
     $.ajax({
-      url: '/user',
-      type: 'PATCH',
+      url: '/user/password',
+      type: 'POST',
       dataType: 'json',
       data: {
-        firstName,
-        lastName,
-        dateOfBirth,
-        address,
+        oldPassword,
+        newPassword,
       },
       beforeSend: function (xhr) {
         xhr.setRequestHeader('Authorization', `Bearer ${token}`);
@@ -54,6 +45,7 @@ $(function () {
       },
       error: function (err) {
         overlay.toggleClass('hide');
+        $('.wrapper__container').html('Error');
         console.log(err);
       },
     });
