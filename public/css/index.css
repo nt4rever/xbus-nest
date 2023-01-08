@@ -142,3 +142,13 @@ body {
     transform: rotate(1turn);
   }
 }
+
+.button-change-password {
+  color: #161616;
+}
+
+.center-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

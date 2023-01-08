@@ -58,6 +58,11 @@ $(function () {
       },
     });
   });
+
+  $('.button-change-password').on('click', function (e) {
+    e.preventDefault();
+    window.location.href = `/page/password?token=${token}`;
+  });
 });
 
 function getUrlVars() {
