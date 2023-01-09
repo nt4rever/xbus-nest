@@ -57,7 +57,8 @@ export class AuthService {
       },
     });
     if (!user) throw new ForbiddenException('Credentials incorrect!');
-
+    if (user.status === 'inactive')
+      throw new ForbiddenException('Account has been denied');
     const pwMatches = await argon.verify(user.password, password);
     if (!pwMatches) throw new ForbiddenException('Credentials incorrect!');
     delete user.password;
