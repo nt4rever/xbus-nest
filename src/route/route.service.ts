@@ -6,20 +6,24 @@ import { RouteDTO } from './dto';
 export class RouteService {
   constructor(private prisma: PrismaService) {}
 
-  async getAllRoute() {
+  async getAllRoute(user = false) {
     const routes = await this.prisma.route.findMany({
       orderBy: {
         routeCode: 'asc',
+      },
+      where: {
+        status: user ? 'active' : undefined,
       },
     });
     return routes;
   }
 
-  async getRoute(routeId: string) {
+  async getRoute(routeId: string, user = false) {
     try {
       const route = await this.prisma.route.findFirstOrThrow({
         where: {
           id: routeId,
+          status: user ? 'active' : undefined,
         },
       });
       return route;

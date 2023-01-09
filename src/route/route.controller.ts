@@ -10,6 +10,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { RouteDTO } from './dto';
@@ -20,20 +21,20 @@ export class RouteController {
   constructor(private routeService: RouteService) {}
 
   @Get()
-  getAllRoute() {
-    return this.routeService.getAllRoute();
+  getAllRoute(@Query('user') user?: boolean) {
+    return this.routeService.getAllRoute(user);
   }
 
   @Get(':id')
-  getRoute(@Param('id') id: string) {
-    return this.routeService.getRoute(id);
+  getRoute(@Param('id') id: string, @Query('user') user?: boolean) {
+    return this.routeService.getRoute(id, user);
   }
 
   @Roles(Role.Admin)
   @UseGuards(JwtGuard, RolesGuard)
   @Post('create')
   @HttpCode(HttpStatus.OK)
-  indertRoute(@Body() dto: RouteDTO) {
+  insertRoute(@Body() dto: RouteDTO) {
     return this.routeService.insertRoute(dto);
   }
 
@@ -41,7 +42,7 @@ export class RouteController {
   @UseGuards(JwtGuard, RolesGuard)
   @Post('update/:id')
   @HttpCode(HttpStatus.OK)
-  updatetRoute(@Param('id') id: string, @Body() dto: RouteDTO) {
+  updateRoute(@Param('id') id: string, @Body() dto: RouteDTO) {
     return this.routeService.updateRoute(id, dto);
   }
 

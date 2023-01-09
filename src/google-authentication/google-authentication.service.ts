@@ -36,6 +36,8 @@ export class GoogleAuthenticationService {
   }
 
   async handleSignIn(user: User) {
+    if (user.status === 'inactive')
+      throw new ForbiddenException('Account has been denied');
     const tokens = await this.authService.getTokens(user.id, user.email);
     await this.authService.updateRefreshToken(user.id, tokens.refreshToken);
     delete user.password;
