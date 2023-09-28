@@ -3,6 +3,7 @@ version: '3.8'
 services:
   xbus_api:
     image: registry.gitlab.com/levantanald/xbus-nest:latest
+    env_file: .env
     ports:
       - 9999:3000
     restart: unless-stopped
